@@ -11,8 +11,9 @@ import { appReducer } from './store/reducers/app.reducer';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent],
+  declarations: [HeaderComponent, FooterComponent, NotFoundPageComponent],
   imports: [
     CommonModule,
     AppRoutingModule,
@@ -29,6 +30,6 @@ import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
       multi: true,
     },
   ],
-  exports: [HeaderComponent, FooterComponent],
+  exports: [HeaderComponent, FooterComponent, NotFoundPageComponent],
 })
 export class CoreModule {}

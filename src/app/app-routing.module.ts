@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NotFoundPageComponent } from './core/components/not-found-page/not-found-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,6 +16,12 @@ const routes: Routes = [
         (m) => m.ProductDetailModule
       ),
   },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./modules/profile/profile.module').then((m) => m.ProfileModule),
+  },
+  { path: '**', component: NotFoundPageComponent },
 ];
 
 @NgModule({
