@@ -34,7 +34,11 @@
     id="productListSection"
     class="py-5 sm:py-10 md:py-20"
   >
-    <form class="max-w-md mx-auto" (ngSubmit)="searchSubmit()">
+    <form
+      class="max-w-xl mx-auto py-3 md:py-5"
+      #searchForm="ngForm"
+      (ngSubmit)="searchSubmit()"
+    >
       <div class="relative">
         <div
           class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -57,10 +61,10 @@
         </div>
         <input
           type="search"
-          id="default-search"
-          class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-accent focus:border-accent"
           placeholder="Search Store"
-          required
+          [(ngModel)]="searchText"
+          name="searchText"
         />
         <button
           type="submit"
@@ -71,126 +75,70 @@
       </div>
     </form>
 
+    <div class="flex justify-center items-center space-x-4">
+      <button
+        class="btn btn-sm btn-accent"
+        [class.btn-outline]="selectedCategory !== ''"
+        (click)="changeCategory('')"
+      >
+        All
+      </button>
+      <button
+        *ngFor="let category of categories; let categoryIndex = index"
+        class="btn btn-sm btn-accent"
+        [class.btn-outline]="selectedCategory !== category"
+        (click)="changeCategory(category)"
+      >
+        {{ category }}
+      </button>
+    </div>
     <div
+      *ngIf="!products[0] || productsLoading"
+      class="flex items-center justify-center w-full h-56 relative"
+    >
+      <div *ngIf="!products[0]" class="text-2xl">No products to show</div>
+      <app-loading-screen *ngIf="productsLoading"></app-loading-screen>
+    </div>
+
+    <div
+      *ngIf="products[0]"
       class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"
     >
-      <div class="group relative">
+      <ng-container *ngFor="let product of products; let productIndex = index">
         <div
-          class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-base-200 lg:aspect-none group-hover:opacity-75 lg:h-72"
+          *ngIf="
+            submittedSearchText == '' ||
+            product.title?.toLocaleLowerCase()?.includes(submittedSearchText) ||
+            product.category
+              ?.toLocaleLowerCase()
+              ?.includes(submittedSearchText) ||
+            product.price?.toString()?.includes(submittedSearchText)
+          "
+          class="group relative"
         >
-          <img
-            src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-            alt="productg image"
-            class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-          />
-        </div>
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm">
-              <a class="">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Black</p>
+          <div
+            class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-base-200 lg:aspect-none group-hover:opacity-75 lg:h-72"
+          >
+            <img
+              [src]="product.image"
+              alt="productg image"
+              class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+            />
           </div>
-          <p class="text-sm font-medium text-accent">$35</p>
-        </div>
-      </div>
-      <div class="group relative">
-        <div
-          class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-        >
-          <img
-            src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-            alt="Front of men&#039;s Basic Tee in black."
-            class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-          />
-        </div>
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Black</p>
+          <div class="mt-4 flex justify-between">
+            <div>
+              <h3 class="text-sm">
+                <a class="">
+                  <span aria-hidden="true" class="absolute inset-0"></span>
+                  {{ product.title }}
+                </a>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">{{ product.category }}</p>
+            </div>
+            <p class="text-sm font-medium text-accent">${{ product.price }}</p>
           </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
         </div>
-      </div>
-      <div class="group relative">
-        <div
-          class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-        >
-          <img
-            src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-            alt="Front of men&#039;s Basic Tee in black."
-            class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-          />
-        </div>
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Black</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-      <div class="group relative">
-        <div
-          class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-        >
-          <img
-            src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-            alt="Front of men&#039;s Basic Tee in black."
-            class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-          />
-        </div>
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Black</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-      <div class="group relative">
-        <div
-          class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
-        >
-          <img
-            src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-            alt="Front of men&#039;s Basic Tee in black."
-            class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-          />
-        </div>
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Black</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-
-      <!-- More products... -->
+      </ng-container>
     </div>
   </section>
 </Main>
