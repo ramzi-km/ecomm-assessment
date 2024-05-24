@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { IProduct } from 'src/app/core/interfaces/product.interface';
 import { ProductService } from 'src/app/shared/services/product.service';
@@ -15,7 +16,7 @@ import { ProductService } from 'src/app/shared/services/product.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   @ViewChild('productListSection') productListSection!: ElementRef;
 
@@ -98,6 +99,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  navigateTo(productId: number) {
+    this.router.navigate(['/products/' + productId]);
   }
 
   ngOnDestroy(): void {

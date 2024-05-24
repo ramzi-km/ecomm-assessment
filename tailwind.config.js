@@ -12,7 +12,7 @@ module.exports = {
     },
   },
   daisyui: {
-    themes: ["retro", "dim"],
+    themes: ["retro", "dim", "cupcake"],
   },
   plugins: [
     require("@tailwindcss/typography"),
