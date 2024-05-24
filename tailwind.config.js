@@ -14,5 +14,9 @@ module.exports = {
   daisyui: {
     themes: ["retro", "dim"],
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/aspect-ratio"),
+    require("daisyui"),
+  ],
 };
