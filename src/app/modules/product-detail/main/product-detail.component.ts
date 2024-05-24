@@ -66,9 +66,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     });
     if (!existInCart) {
       this.store.dispatch(CartActions.addToCart({ product: this.product! }));
-    } else {
-      this.router.navigate(['/cart']);
     }
+    this.router.navigate(['/cart']);
   }
 
   ngOnDestroy(): void {

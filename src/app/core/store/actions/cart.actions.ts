@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IProduct } from '../../interfaces/product.interface';
+import { ICartItem } from '../../interfaces/cartItem.interface';
 
 export const addToCart = createAction(
   '[ProductDetails Component] addToCart',
@@ -8,15 +9,15 @@ export const addToCart = createAction(
 
 export const removeFromCart = createAction(
   '[Cart Component] removeFromCart',
-  props<{ product: Readonly<IProduct> }>()
+  props<{ removingItem: Readonly<ICartItem> }>()
 );
 
 export const incItemQuantity = createAction(
-  '[Cart Component] removeFromCart',
+  '[Cart Component] incQuantity',
   props<{ product: Readonly<IProduct> }>()
 );
 
 export const decItemQuantity = createAction(
-  '[Cart Component] removeFromCart',
+  '[Cart Component] decQuantity',
   props<{ product: Readonly<IProduct> }>()
 );

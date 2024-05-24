@@ -10,10 +10,13 @@ export const cartReducer = createReducer(
     totalPrice: state.totalPrice + product.price,
     totalItems: state.totalItems + 1,
   })),
-  on(cartActions.removeFromCart, (state, { product }) => ({
+  on(cartActions.removeFromCart, (state, { removingItem }) => ({
     ...state,
-    items: state.items.filter((item) => item.product.id !== product.id),
-    totalPrice: state.totalPrice - product.price,
+    items: state.items.filter(
+      (item) => item.product.id !== removingItem.product.id
+    ),
+    totalPrice:
+      state.totalPrice - removingItem.product.price * removingItem.quantity,
     totalItems: state.totalItems - 1,
   })),
   on(cartActions.incItemQuantity, (state, { product }) => ({
